@@ -15,7 +15,6 @@ def display_histogram(df: pd.DataFrame):
         df = df.drop(columns=["Index"])
 
     num_df = df.select_dtypes(include=["number"])
-
     # create a single plot with all the histograms
     n_cols = 5
     n_rows = int(np.ceil(len(num_df.columns) / n_cols))
