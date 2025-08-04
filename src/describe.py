@@ -1,0 +1,42 @@
+import sys
+from describe_utils.statistics import ft_describe
+from tools.load import load
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Describe a dataset")
+    parser.add_argument(
+        "file",
+        type=str,
+        help="The file to describe",
+        default="datasets/dataset_train.csv",
+        nargs="?",
+    )
+    parser.add_argument(
+        "--advanced",
+        "-a",
+        action="store_true",
+        help="Include advanced statistics (missing, unique, iqr)",
+    )
+
+    try:
+        args = parser.parse_args()
+    except SystemExit as e:
+        print("Error: Invalid command line arguments.")
+        sys.exit(e.code)
+
+    df = load(args.file)
+    if df is None:
+        sys.exit(1)
+
+    BLUE = "\033[94m"
+    GREEN = "\033[92m"
+
+    print(f"\n{BLUE}Original describe function:")
+
+    print(df.describe())
+
+    print(f"\n{GREEN}Custom describe function:")
+    ft_describe(df, args.advanced)

@@ -1,0 +1,9 @@
+# Core data science libraries
+numpy>=1.21.0
+pandas>=1.3.0
+matplotlib>=3.4.0
+seaborn>=0.11.0
+
+# Development tools
+flake8>=4.0.0
+black>=22.0.0

@@ -1,0 +1,4 @@
+config/.*env*
+datasets/
+dslr.pdf
+**/__pycache__/
