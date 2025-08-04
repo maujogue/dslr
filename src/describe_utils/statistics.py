@@ -62,6 +62,17 @@ def calculate_stats(numerical_df: pd.DataFrame, advanced: bool = False):
         try:
             col = numerical_df[column]
             col_values = col.dropna().tolist()
+
+            # Handle case where column has only empty/NaN values
+            if not col_values:
+                for name in stat_names:
+                    if name != "count" and name != "missing":
+                        stats[name].append("NaN")
+                stats["count"].append(0)
+                if "missing" in stat_names:
+                    stats["missing"].append(col.isna().sum())
+                continue
+
             check_args(col_values)
 
             count = len(col_values)
