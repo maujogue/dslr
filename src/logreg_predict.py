@@ -9,6 +9,7 @@ from predict.predict import (
 )
 from training.data_engineering import pre_process_test
 
+
 if __name__ == "__main__":
     try:
         parser = argparse.ArgumentParser(
@@ -32,10 +33,9 @@ if __name__ == "__main__":
         weights = load_weights()
         predictions = predict(X, weights)
         if labels is not None:
-            print_precision(predictions, labels)
             save_predictions(predictions)
+            print_precision(predictions, labels)
 
-            print("Predictions saved to datasets/houses.csv")
     except Exception as e:
         print(f"Error: {e}")
         exit(1)

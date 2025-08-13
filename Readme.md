@@ -98,12 +98,6 @@ python3 src/describe.py --help
 ### Example Usage
 
 ```zsh
-# Train the model
-python3 src/logreg_train.py datasets/dataset_train.csv
-
-# Make predictions on test data
-python3 src/logreg_predict.py datasets/dataset_test.csv
-
 # Visualize data distributions
 python3 src/histogram.py datasets/dataset_train.csv
 
@@ -112,6 +106,12 @@ python3 src/pair_plot.py datasets/dataset_train.csv
 
 # Check specific correlations
 python3 src/scatter_plot.py datasets/dataset_train.csv
+
+# Train the model
+python3 src/logreg_train.py datasets/dataset_train.csv
+
+# Make predictions on test data
+python3 src/logreg_predict.py datasets/dataset_test.csv
 ```
 
 ### Model Details

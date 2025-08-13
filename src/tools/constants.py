@@ -9,3 +9,7 @@ FEATURE_COLUMNS = [
 ]
 
 HOUSES = ["Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"]
+
+BLUE = "\033[94m"
+GREEN = "\033[92m"
+RESET = "\033[0m"

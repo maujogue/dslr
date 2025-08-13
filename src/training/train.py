@@ -1,4 +1,5 @@
 import numpy as np
+from tools.constants import GREEN
 
 
 def sigmoid(z):
@@ -44,3 +45,5 @@ def train_all(X, Y_dict, iterations, lr):
         f.write(f"Hufflepuff:{w_hufflepuff.flatten().tolist()}\n")
         f.write(f"Ravenclaw:{w_ravenclaw.flatten().tolist()}\n")
         f.write(f"Slytherin:{w_slytherin.flatten().tolist()}")
+    print(f"\n{GREEN}Weights saved to weights.txt")
+    print(f"{GREEN}You can now use the model to make predictions")

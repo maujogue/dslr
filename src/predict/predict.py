@@ -1,7 +1,7 @@
 import numpy as np
 from training.train import forward
 from sklearn.metrics import accuracy_score
-from tools.constants import HOUSES
+from tools.constants import HOUSES, GREEN, BLUE, RESET
 
 
 def load_weights():
@@ -28,12 +28,15 @@ def save_predictions(predictions):
         f.write("Index,Hogwarts House\n")
         for i, pred in enumerate(predictions):
             f.write(f"{i},{pred}\n")
+    print(f"\n{GREEN}Predictions saved to datasets/houses.csv{RESET}")
 
 
 def print_precision(predictions, labels):
     try:
         precision = accuracy_score(labels, predictions)
-        print(f"Precision: {precision}")
+        print(f"\nAccuracy Score from Scikit-Learn: {BLUE}{precision}{RESET}\n")
+        if precision > 0.98:
+            print(f"{GREEN}PASSED! ✅{RESET}\n")
     except ValueError:
         print(
             "Error: labels and predictions must ",

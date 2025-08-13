@@ -27,7 +27,7 @@ if __name__ == "__main__":
         df = load(args.file)
         if df is None:
             exit(1)
-        print(args.split, "split")
+            
         if args.split is not None:
             df_train, df_val = split_train_validation(df, args.split)
         else:

@@ -1,7 +1,7 @@
 import sys
 from describe_utils.statistics import ft_describe
 from tools.load import load
-
+from tools.constants import BLUE, GREEN
 
 if __name__ == "__main__":
     try:
@@ -31,9 +31,6 @@ if __name__ == "__main__":
         df = load(args.file)
         if df is None:
             sys.exit(1)
-
-        BLUE = "\033[94m"
-        GREEN = "\033[92m"
 
         print(f"\n{BLUE}Original describe function:")
 
