@@ -2,3 +2,4 @@ config/.*env*
 datasets/
 dslr.pdf
 **/__pycache__/
+weights.txt

@@ -32,11 +32,15 @@ install: ## Install dependencies in virtual environment
 	@echo "source $(VENV_ACTIVATE)"
 
 .PHONY: clean
-clean: ## Remove virtual environment and cache files
+clean: ## Remove cache files
 	@echo "Cleaning up..."
 	$(RM) .coverage
 	$(RM) .pytest_cache
 	$(RM) __pycache__
+	$(RM) weights.txt
+	$(RM) datasets/houses.csv
+	$(RM) datasets/Training_houses.csv
+	$(RM) datasets/Validation_houses.csv
 	find . -type d -name "__pycache__" -exec $(RM) {} + 2>/dev/null || true
 	find . -type f -name "*.pyc" -delete 2>/dev/null || true
 	@echo "Cleanup completed!"
