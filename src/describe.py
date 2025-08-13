@@ -4,39 +4,43 @@ from tools.load import load
 
 
 if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser(description="Describe a dataset")
-    parser.add_argument(
-        "file",
-        type=str,
-        help="The file to describe",
-        default="datasets/dataset_train.csv",
-        nargs="?",
-    )
-    parser.add_argument(
-        "--advanced",
-        "-a",
-        action="store_true",
-        help="Include advanced statistics (missing, unique, iqr)",
-    )
-
     try:
-        args = parser.parse_args()
-    except SystemExit as e:
-        print("Error: Invalid command line arguments.")
-        sys.exit(e.code)
+        import argparse
 
-    df = load(args.file)
-    if df is None:
-        sys.exit(1)
+        parser = argparse.ArgumentParser(description="Describe a dataset")
+        parser.add_argument(
+            "file",
+            type=str,
+            help="The file to describe",
+            default="datasets/dataset_train.csv",
+            nargs="?",
+        )
+        parser.add_argument(
+            "--advanced",
+            "-a",
+            action="store_true",
+            help="Include advanced statistics (missing, unique, iqr)",
+        )
 
-    BLUE = "\033[94m"
-    GREEN = "\033[92m"
+        try:
+            args = parser.parse_args()
+        except SystemExit as e:
+            print("Error: Invalid command line arguments.")
+            sys.exit(e.code)
 
-    print(f"\n{BLUE}Original describe function:")
+        df = load(args.file)
+        if df is None:
+            sys.exit(1)
 
-    print(df.describe())
+        BLUE = "\033[94m"
+        GREEN = "\033[92m"
 
-    print(f"\n{GREEN}Custom describe function:")
-    ft_describe(df, args.advanced)
+        print(f"\n{BLUE}Original describe function:")
+
+        print(df.describe())
+
+        print(f"\n{GREEN}Custom describe function:")
+        ft_describe(df, args.advanced)
+    except Exception as e:
+        print(f"Error: {e}")
+        exit(1)
