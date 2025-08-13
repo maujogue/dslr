@@ -1,0 +1,68 @@
+import numpy as np
+from sklearn.model_selection import train_test_split
+from tools.CustomStandardScaler import CustomStandardScaler
+
+from tools.constants import FEATURE_COLUMNS, HOUSES
+
+
+def pre_process(df):
+    # Remove rows with NaN in features or target
+    df_clean = df.dropna(subset=FEATURE_COLUMNS + ["Hogwarts House"]).copy()
+
+    scaler = CustomStandardScaler()
+    X_standardized = scaler.fit_transform(df_clean[FEATURE_COLUMNS])
+
+    # Add bias term (column of ones)
+    X = np.column_stack([np.ones(X_standardized.shape[0]), X_standardized])
+
+    # Extract and encode target variable for one-versus-all classification
+    Y_dict = {}
+
+    for house in HOUSES:
+        # Create binary target: 1 if student is in this house, 0 otherwise
+        Y_dict[house] = (
+            (df_clean["Hogwarts House"] == house)
+            .astype(int)
+            .values.reshape(-1, 1)
+        )
+
+    return X, Y_dict
+
+
+def pre_process_test(df):
+    # Remove rows with NaN in features
+    df_clean = df.dropna(subset=FEATURE_COLUMNS).copy()
+    labels = None
+    if (
+        "Hogwarts House" in df_clean.columns
+        and not df_clean["Hogwarts House"].isnull().all()
+    ):
+        labels = df_clean["Hogwarts House"]
+
+    scaler = CustomStandardScaler()
+    X_standardized = scaler.fit_transform(df_clean[FEATURE_COLUMNS])
+
+    # Add bias term (column of ones)
+    X = np.column_stack([np.ones(X_standardized.shape[0]), X_standardized])
+    print("Dataset after pre-processing: ", X.shape)
+    return X, labels
+
+
+def split_train_validation(df, split):
+    """
+    Splits the input CSV into training and validation sets and saves them as
+    new CSV files.
+    """
+    train_df, val_df = train_test_split(
+        df,
+        test_size=split,
+        random_state=42,
+        shuffle=True,
+        stratify=(
+            df["Hogwarts House"] if "Hogwarts House" in df.columns else None
+        ),
+    )
+    train_df.to_csv("datasets/Training_houses.csv", index=False)
+    val_df.to_csv("datasets/Validation_houses.csv", index=False)
+
+    return train_df, val_df
