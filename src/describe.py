@@ -1,43 +1,49 @@
-import sys
+import argparse
+import logging
+import pandas as pd
 from describe_utils.statistics import ft_describe
-from tools.load import load
+from tools.dataset_utils import (
+    parse_arguments,
+    load_dataset
+)
 from tools.constants import BLUE, GREEN
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.INFO, format='%(message)s')
+
+
+def parse_arguments_with_advanced() -> argparse.Namespace:
+    additional_args = [
+        ("--advanced", {
+            "action": "store_true",
+            "help": "Include advanced statistics (missing, unique, iqr)"
+        }),
+        ("-a", {
+            "action": "store_true",
+            "help": "Short form for --advanced"
+        })
+    ]
+
+    return parse_arguments("Describe a dataset", additional_args=additional_args)
+
+
+def display_statistics(df: pd.DataFrame, advanced: bool = False) -> None:
+    print(f"\n{BLUE}Original describe function:")
+    print(df.describe())
+
+    print(f"\n{GREEN}Custom describe function:")
+    ft_describe(df, advanced)
+
+
+def main():
+    args = parse_arguments_with_advanced()
+    df = load_dataset(args.file)
+    display_statistics(df, args.advanced)
+
 
 if __name__ == "__main__":
     try:
-        import argparse
-
-        parser = argparse.ArgumentParser(description="Describe a dataset")
-        parser.add_argument(
-            "file",
-            type=str,
-            help="The file to describe",
-            default="datasets/dataset_train.csv",
-            nargs="?",
-        )
-        parser.add_argument(
-            "--advanced",
-            "-a",
-            action="store_true",
-            help="Include advanced statistics (missing, unique, iqr)",
-        )
-
-        try:
-            args = parser.parse_args()
-        except SystemExit as e:
-            print("Error: Invalid command line arguments.")
-            sys.exit(e.code)
-
-        df = load(args.file)
-        if df is None:
-            sys.exit(1)
-
-        print(f"\n{BLUE}Original describe function:")
-
-        print(df.describe())
-
-        print(f"\n{GREEN}Custom describe function:")
-        ft_describe(df, args.advanced)
+        main()
     except Exception as e:
-        print(f"Error: {e}")
+        logger.error(f"Error: {e}")
         exit(1)

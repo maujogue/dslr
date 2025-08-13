@@ -1,27 +1,22 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-import pandas as pd
 
 
-def display_histogram(df: pd.DataFrame):
-    if "Hogwarts House" not in df.columns:
-        print("Error: 'Hogwarts House' column not found in the dataset.")
-        exit(1)
-
-    houses = df["Hogwarts House"].dropna().unique()
-
+def prepare_plot_data(df):
     if "Index" in df.columns:
         df = df.drop(columns=["Index"])
+    return df
 
-    num_df = df.select_dtypes(include=["number"])
-    # create a single plot with all the histograms
+
+def create_subplot_grid(num_columns):
     n_cols = 5
-    n_rows = int(np.ceil(len(num_df.columns) / n_cols))
+    n_rows = int(np.ceil(num_columns / n_cols))
     fig, axes = plt.subplots(n_rows, n_cols, figsize=(3 * n_cols, 3 * n_rows))
-    axes = axes.flatten()
+    return fig, axes.flatten()
 
-    # plot histograms for each column, for each house
+
+def plot_house_histograms(df, num_df, houses, axes):
     for idx, col in enumerate(num_df.columns):
         ax = axes[idx]
         for house in houses:
@@ -38,14 +33,28 @@ def display_histogram(df: pd.DataFrame):
         ax.set_title(f"{col}")
         ax.set_xlabel(col)
         ax.set_ylabel("Density")
+    return idx
 
-    # Add a single legend for all houses outside the subplots
+
+def finalize_plot(fig, axes, last_idx):
     handles, labels = axes[0].get_legend_handles_labels()
     fig.legend(
         handles, labels, title="House", prop={"size": 15}, loc="lower right"
     )
-    # Hide any unused subplots
-    for j in range(idx + 1, len(axes)):
+
+    for j in range(last_idx + 1, len(axes)):
         fig.delaxes(axes[j])
     plt.tight_layout()
+
+
+def display_histogram(df):
+    df = prepare_plot_data(df)
+
+    houses = df["Hogwarts House"].dropna().unique()
+    num_df = df.select_dtypes(include=["number"])
+
+    fig, axes = create_subplot_grid(len(num_df.columns))
+    last_idx = plot_house_histograms(df, num_df, houses, axes)
+    finalize_plot(fig, axes, last_idx)
+
     plt.show()

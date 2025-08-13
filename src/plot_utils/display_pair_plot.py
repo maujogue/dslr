@@ -4,10 +4,6 @@ import seaborn as sns
 
 
 def display_pair_plot(df: pd.DataFrame):
-    """
-    Displaying this, we will keep those features for training: potions, charms,
-    transfiguration, astronomy, divination, ancient runes, muggle studies,
-    """
     if "Index" in df.columns:
         df = df.drop(columns=["Index"])
 
