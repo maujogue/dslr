@@ -1,8 +1,10 @@
 import argparse
 import logging
 import sys
+import os
 from typing import List, Tuple, Dict, Any
 import pandas as pd
+import matplotlib.pyplot as plt
 from tools.load import load
 from tools.constants import DEFAULT_DATASET
 
@@ -54,7 +56,7 @@ def validate_numerical_columns(df: pd.DataFrame) -> pd.DataFrame:
     if num_df.empty:
         logger.error("No numerical columns found in the dataset.")
         sys.exit(1)
-
+    
     logger.info(f"Found {len(num_df.columns)} numerical columns")
     return num_df
 
@@ -63,3 +65,10 @@ def validate_hogwarts_dataset(df: pd.DataFrame) -> pd.DataFrame:
     df = validate_required_columns(df, ["Hogwarts House"])
     validate_numerical_columns(df)
     return df
+
+
+def save_plot(fig: plt.Figure, filename: str) -> None:
+    os.makedirs("plots", exist_ok=True)
+    filepath = os.path.join("plots", filename)
+    fig.savefig(filepath, dpi=300, bbox_inches="tight")
+    print(f"Plot saved as: {filepath}")

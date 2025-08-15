@@ -2,6 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
+from tools.constants import HOUSE_COLORS
+from tools.dataset_utils import save_plot
+
 
 def prepare_plot_data(df):
     if "Index" in df.columns:
@@ -29,6 +32,7 @@ def plot_house_histograms(df, num_df, houses, axes):
                 bins=30,
                 alpha=0.5,
                 ax=ax,
+                color=HOUSE_COLORS[house]
             )
         ax.set_title(f"{col}")
         ax.set_xlabel(col)
@@ -57,4 +61,5 @@ def display_histogram(df):
     last_idx = plot_house_histograms(df, num_df, houses, axes)
     finalize_plot(fig, axes, last_idx)
 
+    save_plot(fig, "histogram.png")
     plt.show()
