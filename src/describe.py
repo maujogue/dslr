@@ -1,12 +1,12 @@
 import argparse
 import logging
 import pandas as pd
-from describe_utils.statistics import ft_describe
-from tools.dataset_utils import (
+from data_analysis.statistics import ft_describe
+from data_handling.validator import (
     parse_arguments,
     load_dataset
 )
-from tools.constants import BLUE, GREEN
+from data_handling.constants import BLUE, GREEN
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(message)s')
@@ -24,7 +24,10 @@ def parse_arguments_with_advanced() -> argparse.Namespace:
         })
     ]
 
-    return parse_arguments("Describe a dataset", additional_args=additional_args)
+    return parse_arguments(
+        "Describe a dataset",
+        additional_args=additional_args
+    )
 
 
 def display_statistics(df: pd.DataFrame, advanced: bool = False) -> None:

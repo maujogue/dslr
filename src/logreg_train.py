@@ -1,7 +1,7 @@
 import argparse
-from tools.load import load
-from training.train import train_all
-from training.data_engineering import pre_process, split_train_validation
+from data_handling.loader import load
+from ml.data_engineering import pre_process, split_train_validation
+from ml.train import train_all
 
 if __name__ == "__main__":
     try:
@@ -27,7 +27,7 @@ if __name__ == "__main__":
         df = load(args.file)
         if df is None:
             exit(1)
-            
+
         if args.split is not None:
             df_train, df_val = split_train_validation(df, args.split)
         else:

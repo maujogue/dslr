@@ -1,6 +1,6 @@
 import logging
-from plot_utils.display_histogram import display_histogram
-from tools.dataset_utils import (
+from data_analysis.display_histogram import display_histogram
+from data_handling.validator import (
     parse_arguments,
     load_dataset,
     validate_hogwarts_dataset

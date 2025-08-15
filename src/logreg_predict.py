@@ -1,13 +1,12 @@
 import argparse
-
-from tools.load import load
-from predict.predict import (
+from data_handling.loader import load
+from ml.data_engineering import pre_process_test
+from ml.predict import (
     load_weights,
     predict,
     save_predictions,
     print_precision,
 )
-from training.data_engineering import pre_process_test
 
 
 if __name__ == "__main__":

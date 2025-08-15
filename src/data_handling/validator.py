@@ -1,18 +1,20 @@
 import argparse
 import logging
 import sys
-import os
-from typing import List, Tuple, Dict, Any
 import pandas as pd
-import matplotlib.pyplot as plt
-from tools.load import load
-from tools.constants import DEFAULT_DATASET
+from typing import Any
+from data_handling.loader import load
+from data_handling.constants import DEFAULT_DATASET
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 
-def parse_arguments(description: str, default_file: str = DEFAULT_DATASET, additional_args: List[Tuple[str, Dict[str, Any]]] = None) -> argparse.Namespace:
+def parse_arguments(
+    description: str,
+    default_file: str = DEFAULT_DATASET,
+    additional_args: list[tuple[str, dict[str, Any]]] = None
+) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
         "file",
@@ -42,8 +44,12 @@ def load_dataset(file_path: str) -> pd.DataFrame:
     return df
 
 
-def validate_required_columns(df: pd.DataFrame, required_columns: List[str]) -> pd.DataFrame:
-    missing_columns = [col for col in required_columns if col not in df.columns]
+def validate_required_columns(
+        df: pd.DataFrame,
+        required_columns: list[str]) -> pd.DataFrame:
+    missing_columns = [
+        col for col in required_columns if col not in df.columns
+    ]
     if missing_columns:
         logger.error(f"Missing required columns: {missing_columns}")
         sys.exit(1)
@@ -56,7 +62,7 @@ def validate_numerical_columns(df: pd.DataFrame) -> pd.DataFrame:
     if num_df.empty:
         logger.error("No numerical columns found in the dataset.")
         sys.exit(1)
-    
+
     logger.info(f"Found {len(num_df.columns)} numerical columns")
     return num_df
 
@@ -65,10 +71,3 @@ def validate_hogwarts_dataset(df: pd.DataFrame) -> pd.DataFrame:
     df = validate_required_columns(df, ["Hogwarts House"])
     validate_numerical_columns(df)
     return df
-
-
-def save_plot(fig: plt.Figure, filename: str) -> None:
-    os.makedirs("plots", exist_ok=True)
-    filepath = os.path.join("plots", filename)
-    fig.savefig(filepath, dpi=300, bbox_inches="tight")
-    print(f"Plot saved as: {filepath}")

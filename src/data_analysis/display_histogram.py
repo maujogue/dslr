@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-
-from tools.constants import HOUSE_COLORS
-from tools.dataset_utils import save_plot
+from data_handling.constants import HOUSE_COLORS
+from data_analysis.saver import save_plot
 
 
 def prepare_plot_data(df):

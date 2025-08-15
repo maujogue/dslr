@@ -1,8 +1,7 @@
 import numpy as np
 from sklearn.model_selection import train_test_split
-from tools.CustomStandardScaler import CustomStandardScaler
-
-from tools.constants import FEATURE_COLUMNS, HOUSES
+from data_handling.CustomStandardScaler import CustomStandardScaler
+from data_handling.constants import FEATURE_COLUMNS, HOUSES
 
 
 def pre_process(df):

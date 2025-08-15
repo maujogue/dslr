@@ -1,6 +1,6 @@
 import logging
-from plot_utils.display_pair_plot import display_pair_plot
-from tools.dataset_utils import (
+from data_analysis.display_pair_plot import display_pair_plot
+from data_handling.validator import (
     parse_arguments,
     load_dataset,
     validate_hogwarts_dataset

@@ -1,6 +1,6 @@
 import logging
-from plot_utils.display_scatter_plot import display_scatter_plot
-from tools.dataset_utils import (
+from data_analysis.display_scatter_plot import display_scatter_plot
+from data_handling.validator import (
     parse_arguments,
     load_dataset,
     validate_hogwarts_dataset

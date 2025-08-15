@@ -1,7 +1,7 @@
 import numpy as np
-from training.train import forward
 from sklearn.metrics import accuracy_score
-from tools.constants import HOUSES, GREEN, BLUE, RESET
+from data_handling.constants import HOUSES, GREEN, BLUE, RESET
+from ml.train import forward
 
 
 def load_weights():
