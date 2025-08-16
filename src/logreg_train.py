@@ -2,6 +2,7 @@ import argparse
 from data_handling.loader import load
 from ml.data_engineering import pre_process, split_train_validation
 from ml.train import train_all
+from ml.train_bonus import train_all_bonus
 
 if __name__ == "__main__":
     try:
@@ -22,6 +23,11 @@ if __name__ == "__main__":
             const=0.2,
             nargs="?",
         )
+        parser.add_argument(
+            "--bonus",
+            action="store_true",
+            help="Train with multiple optimizers and compare performance",
+        )
         args = parser.parse_args()
 
         df = load(args.file)
@@ -34,7 +40,10 @@ if __name__ == "__main__":
             df_train = df
         X, Y_dict = pre_process(df_train)
 
-        train_all(X, Y_dict, 10000, 0.001)
+        if args.bonus:
+            train_all_bonus(X, Y_dict, 10000, 0.001)
+        else:
+            train_all(X, Y_dict, 10000, 0.001)
     except Exception as e:
         print(f"Error: {e}")
         exit(1)

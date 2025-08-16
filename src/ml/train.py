@@ -1,5 +1,6 @@
 import numpy as np
-from data_handling.constants import GREEN
+import os
+from data_handling.constants import GREEN, HOUSES
 
 
 def sigmoid(z):
@@ -34,16 +35,31 @@ def train(X, Y, iterations, lr):
     return w
 
 
-def train_all(X, Y_dict, iterations, lr):
-    w_gryffindor = train(X, Y_dict["Gryffindor"], iterations, lr)
-    w_hufflepuff = train(X, Y_dict["Hufflepuff"], iterations, lr)
-    w_ravenclaw = train(X, Y_dict["Ravenclaw"], iterations, lr)
-    w_slytherin = train(X, Y_dict["Slytherin"], iterations, lr)
+def save_weights(weights, filename, description):
+    with open(filename, "w") as f:
+        for house in HOUSES:
+            f.write(f"{house}:{weights[house].flatten().tolist()}\n")
+    print(f"{GREEN}  - {filename} ({description})")
+    print(f"{GREEN}Weights saved successfully!")
 
-    with open("weights.txt", "w") as f:
-        f.write(f"Gryffindor:{w_gryffindor.flatten().tolist()}\n")
-        f.write(f"Hufflepuff:{w_hufflepuff.flatten().tolist()}\n")
-        f.write(f"Ravenclaw:{w_ravenclaw.flatten().tolist()}\n")
-        f.write(f"Slytherin:{w_slytherin.flatten().tolist()}")
-    print(f"\n{GREEN}Weights saved to weights.txt")
+
+def create_weights_directory():
+    weights_dir = "weights"
+    if not os.path.exists(weights_dir):
+        os.makedirs(weights_dir)
+        print(f"{GREEN}Created weights directory: {weights_dir}/")
+    return weights_dir
+
+
+def train_all(X, Y_dict, iterations, lr):
+    weights = {}
+
+    for house in HOUSES:
+        print(f"{GREEN}Training {house}...")
+        weights[house] = train(X, Y_dict[house], iterations, lr)
+
+    weights_dir = create_weights_directory()
+    save_weights(weights, f"{weights_dir}/weights.txt", "regular training")
+    print(f"\n{GREEN}Weights saved in {weights_dir}/:")
+
     print(f"{GREEN}You can now use the model to make predictions")

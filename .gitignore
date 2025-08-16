@@ -1,6 +1,7 @@
 config/.*env*
 datasets/
 plots/
+weights/
 dslr.pdf
 **/__pycache__/
 weights.txt
