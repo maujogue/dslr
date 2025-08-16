@@ -59,7 +59,7 @@ def train_all(X, Y_dict, iterations, lr):
         weights[house] = train(X, Y_dict[house], iterations, lr)
 
     weights_dir = create_weights_directory()
-    save_weights(weights, f"{weights_dir}/weights.txt", "regular training")
+    save_weights(weights, f"{weights_dir}/weights_batch.txt", "regular training")
     print(f"\n{GREEN}Weights saved in {weights_dir}/:")
 
     print(f"{GREEN}You can now use the model to make predictions")

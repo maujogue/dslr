@@ -4,14 +4,18 @@ from data_handling.constants import HOUSES, GREEN, BLUE, RESET
 from ml.train import forward
 
 
-def load_weights():
+def load_weights(filepath="weights/weights_batch.txt"):
     weights = {}
-    with open("weights.txt", "r") as f:
-        for line in f:
-            house, weight_str = line.strip().split(":")
-            weight_list = eval(weight_str)
-            weights[house] = np.array(weight_list).reshape(-1, 1)
-    return weights
+    try:
+        with open(filepath, "r") as f:
+            for line in f:
+                house, weight_str = line.strip().split(":")
+                weight_list = eval(weight_str)
+                weights[house] = np.array(weight_list).reshape(-1, 1)
+        print(f"Loaded weights from {filepath}")
+        return weights
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Weight file not found: {filepath}")
 
 
 def predict(X, weights):
@@ -42,3 +46,13 @@ def print_precision(predictions, labels):
             "Error: labels and predictions must ",
             "have the same length and no NaN values",
         )
+
+
+def predict_all(X, labels):
+    weights = load_weights()
+    predictions = predict(X, weights)
+    save_predictions(predictions)
+    if labels is not None:
+        print_precision(predictions, labels)
+    else:
+        print("No labels found - skipping precision calculation")

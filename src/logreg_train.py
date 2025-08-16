@@ -41,9 +41,9 @@ if __name__ == "__main__":
         X, Y_dict = pre_process(df_train)
 
         if args.bonus:
-            train_all_bonus(X, Y_dict, 10000, 0.001)
+            train_all_bonus(X, Y_dict, 1000, 0.01)
         else:
-            train_all(X, Y_dict, 10000, 0.001)
+            train_all(X, Y_dict, 1000, 0.01)
     except Exception as e:
         print(f"Error: {e}")
         exit(1)
