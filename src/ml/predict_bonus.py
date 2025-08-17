@@ -38,7 +38,8 @@ def calculate_prediction_agreement(predictions1, predictions2):
     if len(predictions1) != len(predictions2):
         return 0.0
 
-    agreement = sum(1 for p1, p2 in zip(predictions1, predictions2) if p1 == p2)
+    agreement = sum(1 for p1, p2 in zip(predictions1, predictions2)
+                    if p1 == p2)
     return (agreement / len(predictions1)) * 100
 
 
@@ -55,7 +56,8 @@ def compare_predictions(all_predictions):
                     all_predictions[model1],
                     all_predictions[model2]
                 )
-                print(f"{model1:<12} vs {model2:<12}: {agreement:.1f}% agreement")
+                print(f"{model1:<12} vs {model2:<12}: "
+                      f"{agreement:.1f}% agreement")
 
 
 def compare_accuracy(all_predictions, labels):
@@ -80,7 +82,8 @@ def save_all_predictions(all_predictions):
         os.makedirs(predictions_dir)
 
     for model_name, predictions in all_predictions.items():
-        filename = f"{predictions_dir}/houses_{model_name.lower().replace(' ', '_')}.csv"
+        filename = (f"{predictions_dir}/houses_"
+                    f"{model_name.lower().replace(' ', '_')}.csv")
         with open(filename, "w") as f:
             f.write("Index,Hogwarts House\n")
             for i, pred in enumerate(predictions):
@@ -96,7 +99,8 @@ def predict_all_bonus(X, labels):
 
     all_weights = load_all_weights()
     if not all_weights:
-        print("Error: No models loaded. Make sure to run training with --bonus first.")
+        print("Error: No models loaded. Make sure to run training "
+              "with --bonus first.")
         return
 
     all_predictions = {}
