@@ -1,7 +1,29 @@
 import numpy as np
+import pickle
+import os
 from sklearn.model_selection import train_test_split
 from data_handling.CustomStandardScaler import CustomStandardScaler
 from data_handling.constants import FEATURE_COLUMNS, HOUSES
+
+
+def save_scaler(scaler, filepath="weights/scaler.pkl"):
+    weights_dir = os.path.dirname(filepath)
+    if not os.path.exists(weights_dir):
+        os.makedirs(weights_dir)
+
+    with open(filepath, 'wb') as f:
+        pickle.dump(scaler, f)
+    print(f"Scaler saved to {filepath}")
+
+
+def load_scaler(filepath="weights/scaler.pkl"):
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"Scaler file not found: {filepath}")
+
+    with open(filepath, 'rb') as f:
+        scaler = pickle.load(f)
+    print(f"Scaler loaded from {filepath}")
+    return scaler
 
 
 def pre_process(df):
@@ -10,6 +32,9 @@ def pre_process(df):
 
     scaler = CustomStandardScaler()
     X_standardized = scaler.fit_transform(df_clean[FEATURE_COLUMNS])
+
+    # Save the fitted scaler for use during testing
+    save_scaler(scaler)
 
     # Add bias term (column of ones)
     X = np.column_stack([np.ones(X_standardized.shape[0]), X_standardized])
@@ -38,8 +63,9 @@ def pre_process_test(df):
     ):
         labels = df_clean["Hogwarts House"]
 
-    scaler = CustomStandardScaler()
-    X_standardized = scaler.fit_transform(df_clean[FEATURE_COLUMNS])
+    # Load the scaler fitted during training
+    scaler = load_scaler()
+    X_standardized = scaler.transform(df_clean[FEATURE_COLUMNS])
 
     # Add bias term (column of ones)
     X = np.column_stack([np.ones(X_standardized.shape[0]), X_standardized])
