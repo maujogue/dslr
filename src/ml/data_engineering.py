@@ -28,7 +28,11 @@ def load_scaler(filepath="weights/scaler.pkl"):
 
 def pre_process(df):
     # Remove rows with NaN in features or target
-    df_clean = df.dropna(subset=FEATURE_COLUMNS + ["Hogwarts House"]).copy()
+    df_clean = df.copy()
+    for col in df_clean:
+        if df_clean[col].isnull().any():
+            mean_val = df_clean[col].mean()
+            df_clean[col].fillna(mean_val, inplace=True)
 
     scaler = CustomStandardScaler()
     X_standardized = scaler.fit_transform(df_clean[FEATURE_COLUMNS])
@@ -55,7 +59,11 @@ def pre_process(df):
 
 def pre_process_test(df):
     # Remove rows with NaN in features
-    df_clean = df.dropna(subset=FEATURE_COLUMNS).copy()
+    df_clean = df.copy()
+    for col in df_clean:
+        if df_clean[col].isnull().any():
+            mean_val = df_clean[col].mean()
+            df_clean[col].fillna(mean_val, inplace=True)
     labels = None
     if (
         "Hogwarts House" in df_clean.columns
