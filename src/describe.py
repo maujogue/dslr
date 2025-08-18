@@ -18,7 +18,6 @@ def parse_arguments_with_advanced() -> argparse.Namespace:
                 "help": "Include advanced statistics (missing, unique, iqr)",
             },
         ),
-        ("-a", {"action": "store_true", "help": "Short form for --advanced"}),
     ]
 
     return parse_arguments(
