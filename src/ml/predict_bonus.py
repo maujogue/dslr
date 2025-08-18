@@ -1,7 +1,7 @@
 import numpy as np
 import os
 from sklearn.metrics import accuracy_score
-from data_handling.constants import HOUSES, GREEN
+from data_handling.constants import HOUSES, GREEN, RESET
 from ml.train import forward
 from ml.predict import load_weights
 
@@ -20,7 +20,7 @@ def load_all_weights():
         try:
             model_weights = load_weights(filepath)
             weights[name] = model_weights
-            print(f"{GREEN}✓ Loaded {name} model")
+            print(f"{GREEN}✓ Loaded {name} model{RESET}")
         except Exception as e:
             print(f"✗ Failed to load {name} model: {e}")
 
@@ -44,8 +44,8 @@ def calculate_prediction_agreement(predictions1, predictions2):
 
 
 def compare_predictions(all_predictions):
-    print(f"\n{GREEN}PREDICTION COMPARISON")
-    print(f"{GREEN}=========================")
+    print("\nPREDICTION COMPARISON")
+    print("=========================")
 
     model_names = list(all_predictions.keys())
 
@@ -62,11 +62,11 @@ def compare_predictions(all_predictions):
 
 def compare_accuracy(all_predictions, labels):
     if labels is None:
-        print(f"\n{GREEN}No labels available for accuracy comparison")
+        print(f"\nNo labels available for accuracy comparison")
         return
 
-    print(f"\n{GREEN}ACCURACY COMPARISON")
-    print(f"{GREEN}=========================")
+    print("\nACCURACY COMPARISON")
+    print("=========================")
 
     for model_name, predictions in all_predictions.items():
         try:
@@ -88,14 +88,14 @@ def save_all_predictions(all_predictions):
             f.write("Index,Hogwarts House\n")
             for i, pred in enumerate(predictions):
                 f.write(f"{i},{pred}\n")
-        print(f"{GREEN}  - {filename} ({model_name} predictions)")
+        print(f"  - {filename} ({model_name} predictions)")
 
-    print(f"\n{GREEN}All predictions saved to {predictions_dir}/")
+    print(f"\n{GREEN}All predictions saved to {predictions_dir}/{RESET}")
 
 
 def predict_all_bonus(X, labels):
-    print(f"\n{GREEN}BONUS MODE: Predicting with multiple models!")
-    print(f"{GREEN}Comparing Batch GD, SGD, and Mini-batch GD predictions\n")
+    print(f"\nBONUS MODE: Predicting with multiple models!")
+    print(f"Comparing Batch GD, SGD, and Mini-batch GD predictions\n")
 
     all_weights = load_all_weights()
     if not all_weights:
@@ -115,5 +115,5 @@ def predict_all_bonus(X, labels):
 
     save_all_predictions(all_predictions)
 
-    print(f"\n{GREEN}BONUS PREDICTION COMPLETED!")
-    print(f"{GREEN}Use the saved files to analyze model differences.")
+    print(f"\n{GREEN}BONUS PREDICTION COMPLETED!{RESET}")
+    print(f"{GREEN}Use the saved files to analyze model differences.{RESET}")

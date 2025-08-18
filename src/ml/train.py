@@ -1,6 +1,6 @@
 import numpy as np
 import os
-from data_handling.constants import GREEN, HOUSES
+from data_handling.constants import BLUE, GREEN, HOUSES, RESET
 
 
 def sigmoid(z):
@@ -39,15 +39,15 @@ def save_weights(weights, filename, description):
     with open(filename, "w") as f:
         for house in HOUSES:
             f.write(f"{house}:{weights[house].flatten().tolist()}\n")
-    print(f"{GREEN}  - {filename} ({description})")
-    print(f"{GREEN}Weights saved successfully!")
+    print(f"  - {filename} ({description})")
+    print(f"Weights saved successfully!")
 
 
 def create_weights_directory():
     weights_dir = "weights"
     if not os.path.exists(weights_dir):
         os.makedirs(weights_dir)
-        print(f"{GREEN}Created weights directory: {weights_dir}/")
+        print(f"Created weights directory: {weights_dir}/")
     return weights_dir
 
 
@@ -55,7 +55,7 @@ def train_all(X, Y_dict, iterations, lr):
     weights = {}
 
     for house in HOUSES:
-        print(f"{GREEN}Training {house}...")
+        print(f"{BLUE}Training {house}...{RESET}")
         weights[house] = train(X, Y_dict[house], iterations, lr)
 
     weights_dir = create_weights_directory()
@@ -63,4 +63,4 @@ def train_all(X, Y_dict, iterations, lr):
                  "regular training")
     print(f"\n{GREEN}Weights saved in {weights_dir}/:")
 
-    print(f"{GREEN}You can now use the model to make predictions")
+    print(f"{GREEN}You can now use the model to make predictions{RESET}")
