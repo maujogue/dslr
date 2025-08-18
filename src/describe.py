@@ -12,13 +12,12 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 def parse_arguments_with_advanced() -> argparse.Namespace:
     additional_args = [
         (
-            "--advanced",
+            "-a",
             {
                 "action": "store_true",
                 "help": "Include advanced statistics (missing, unique, iqr)",
             },
         ),
-        ("-a", {"action": "store_true", "help": "Short form for --advanced"}),
     ]
 
     return parse_arguments(
