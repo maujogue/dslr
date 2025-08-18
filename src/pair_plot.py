@@ -3,11 +3,11 @@ from data_analysis.display_pair_plot import display_pair_plot
 from data_handling.validator import (
     parse_arguments,
     load_dataset,
-    validate_hogwarts_dataset
+    validate_hogwarts_dataset,
 )
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def main():

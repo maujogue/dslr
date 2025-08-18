@@ -2,31 +2,27 @@ import argparse
 import logging
 import pandas as pd
 from data_analysis.statistics import ft_describe
-from data_handling.validator import (
-    parse_arguments,
-    load_dataset
-)
+from data_handling.validator import parse_arguments, load_dataset
 from data_handling.constants import BLUE, GREEN
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def parse_arguments_with_advanced() -> argparse.Namespace:
     additional_args = [
-        ("--advanced", {
-            "action": "store_true",
-            "help": "Include advanced statistics (missing, unique, iqr)"
-        }),
-        ("-a", {
-            "action": "store_true",
-            "help": "Short form for --advanced"
-        })
+        (
+            "--advanced",
+            {
+                "action": "store_true",
+                "help": "Include advanced statistics (missing, unique, iqr)",
+            },
+        ),
+        ("-a", {"action": "store_true", "help": "Short form for --advanced"}),
     ]
 
     return parse_arguments(
-        "Describe a dataset",
-        additional_args=additional_args
+        "Describe a dataset", additional_args=additional_args
     )
 
 

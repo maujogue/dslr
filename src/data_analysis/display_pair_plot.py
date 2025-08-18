@@ -16,7 +16,7 @@ def display_pair_plot(df: pd.DataFrame):
         plot_kws={"alpha": 0.6},
         corner=True,
         height=2,
-        palette=HOUSE_COLORS
+        palette=HOUSE_COLORS,
     )
 
     save_plot(pair_plot.figure, "pair_plot.png")

@@ -13,7 +13,7 @@ def load_all_weights():
     weight_files = [
         ("Batch GD", f"{weights_dir}/weights_batch.txt"),
         ("SGD", f"{weights_dir}/weights_sgd.txt"),
-        ("Mini-batch", f"{weights_dir}/weights_mini_batch.txt")
+        ("Mini-batch", f"{weights_dir}/weights_mini_batch.txt"),
     ]
 
     for name, filepath in weight_files:
@@ -38,8 +38,9 @@ def calculate_prediction_agreement(predictions1, predictions2):
     if len(predictions1) != len(predictions2):
         return 0.0
 
-    agreement = sum(1 for p1, p2 in zip(predictions1, predictions2)
-                    if p1 == p2)
+    agreement = sum(
+        1 for p1, p2 in zip(predictions1, predictions2) if p1 == p2
+    )
     return (agreement / len(predictions1)) * 100
 
 
@@ -53,16 +54,17 @@ def compare_predictions(all_predictions):
         for j, model2 in enumerate(model_names):
             if i < j:
                 agreement = calculate_prediction_agreement(
-                    all_predictions[model1],
-                    all_predictions[model2]
+                    all_predictions[model1], all_predictions[model2]
                 )
-                print(f"{model1:<12} vs {model2:<12}: "
-                      f"{agreement:.1f}% agreement")
+                print(
+                    f"{model1:<12} vs {model2:<12}: "
+                    f"{agreement:.1f}% agreement"
+                )
 
 
 def compare_accuracy(all_predictions, labels):
     if labels is None:
-        print(f"\nNo labels available for accuracy comparison")
+        print("\nNo labels available for accuracy comparison")
         return
 
     print("\nACCURACY COMPARISON")
@@ -82,8 +84,10 @@ def save_all_predictions(all_predictions):
         os.makedirs(predictions_dir)
 
     for model_name, predictions in all_predictions.items():
-        filename = (f"{predictions_dir}/houses_"
-                    f"{model_name.lower().replace(' ', '_')}.csv")
+        filename = (
+            f"{predictions_dir}/houses_"
+            f"{model_name.lower().replace(' ', '_')}.csv"
+        )
         with open(filename, "w") as f:
             f.write("Index,Hogwarts House\n")
             for i, pred in enumerate(predictions):
@@ -94,13 +98,15 @@ def save_all_predictions(all_predictions):
 
 
 def predict_all_bonus(X, labels):
-    print(f"\nBONUS MODE: Predicting with multiple models!")
-    print(f"Comparing Batch GD, SGD, and Mini-batch GD predictions\n")
+    print("\nBONUS MODE: Predicting with multiple models!")
+    print("Comparing Batch GD, SGD, and Mini-batch GD predictions\n")
 
     all_weights = load_all_weights()
     if not all_weights:
-        print("Error: No models loaded. Make sure to run training "
-              "with --bonus first.")
+        print(
+            "Error: No models loaded. Make sure to run training "
+            "with --bonus first."
+        )
         return
 
     all_predictions = {}

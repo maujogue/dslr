@@ -2,7 +2,7 @@ import logging
 import pandas as pd
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def load(path: str) -> pd.DataFrame:

@@ -31,7 +31,7 @@ def plot_house_histograms(df, num_df, houses, axes):
                 bins=30,
                 alpha=0.5,
                 ax=ax,
-                color=HOUSE_COLORS[house]
+                color=HOUSE_COLORS[house],
             )
         ax.set_title(f"{col}")
         ax.set_xlabel(col)

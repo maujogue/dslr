@@ -38,8 +38,10 @@ def save_predictions(predictions):
 def print_precision(predictions, labels):
     try:
         precision = accuracy_score(labels, predictions)
-        print(f"\nAccuracy Score from Scikit-Learn: "
-              f"{BLUE}{precision}{RESET}\n")
+        print(
+            f"\nAccuracy Score from Scikit-Learn: "
+            f"{BLUE}{precision}{RESET}\n"
+        )
         if precision > 0.98:
             print(f"{GREEN}PASSED! ✅{RESET}\n")
     except ValueError:

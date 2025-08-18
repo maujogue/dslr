@@ -1,8 +1,13 @@
 import numpy as np
 import time
 from data_handling.constants import BLUE, GREEN, HOUSES, RESET
-from .train import (train, loss, save_weights, create_weights_directory,
-                    gradient)
+from .train import (
+    train,
+    loss,
+    save_weights,
+    create_weights_directory,
+    gradient,
+)
 
 
 def train_sgd(X, Y, iterations, lr):
@@ -14,8 +19,8 @@ def train_sgd(X, Y, iterations, lr):
             print("Iteration %4d => Loss: %.20f" % (i, loss(X, Y, w)))
 
         random_idx = np.random.randint(0, n_samples)
-        X_sample = X[random_idx:random_idx+1]
-        Y_sample = Y[random_idx:random_idx+1]
+        X_sample = X[random_idx: random_idx + 1]
+        Y_sample = Y[random_idx: random_idx + 1]
 
         w_gradient = gradient(X_sample, Y_sample, w) * lr
         w -= w_gradient
@@ -52,8 +57,9 @@ def train_optimizer(X, Y_dict, iterations, lr, train_func, kwargs):
 
 
 def calculate_average_loss(X, Y_dict, weights):
-    return (sum(loss(X, Y_dict[house], weights[house]) for house in HOUSES)
-            / len(HOUSES))
+    return sum(
+        loss(X, Y_dict[house], weights[house]) for house in HOUSES
+    ) / len(HOUSES)
 
 
 def train_all_optimizers(X, Y_dict, iterations, lr, optimizers):
@@ -61,14 +67,15 @@ def train_all_optimizers(X, Y_dict, iterations, lr, optimizers):
 
     for name, train_func, kwargs in optimizers:
         print("Training with {name}...")
-        weights, training_time = train_optimizer(X, Y_dict, iterations, lr,
-                                                 train_func, kwargs)
+        weights, training_time = train_optimizer(
+            X, Y_dict, iterations, lr, train_func, kwargs
+        )
         final_loss = calculate_average_loss(X, Y_dict, weights)
 
         results[name] = {
             "weights": weights,
             "time": training_time,
-            "loss": final_loss
+            "loss": final_loss,
         }
 
     return results
@@ -93,36 +100,43 @@ def display_performance_comparison(results):
 
     for name, result in results.items():
         speedup_text = format_speedup(name, batch_time, result["time"])
-        print(f"{name:<12} Final Loss: {result['loss']:.6f}, "
-              f"Training Time: {result['time']:.1f}s  {speedup_text}")
+        print(
+            f"{name:<12} Final Loss: {result['loss']:.6f}, "
+            f"Training Time: {result['time']:.1f}s  {speedup_text}"
+        )
 
     fastest_optimizer = min(results.items(), key=lambda x: x[1]["time"])[0]
     best_loss_optimizer = min(results.items(), key=lambda x: x[1]["loss"])[0]
 
-    print(f"\n{GREEN}RECOMMENDATION: {fastest_optimizer} is fastest, "
-          f"{best_loss_optimizer} has best loss!\n{RESET}")
+    print(
+        f"\n{GREEN}RECOMMENDATION: {fastest_optimizer} is fastest, "
+        f"{best_loss_optimizer} has best loss!\n{RESET}"
+    )
 
 
 def save_all_weights_bonus(weights_batch, weights_sgd, weights_mini):
     weights_dir = create_weights_directory()
     save_weights(weights_batch, f"{weights_dir}/weights_batch.txt", "baseline")
     save_weights(weights_sgd, f"{weights_dir}/weights_sgd.txt", "stochastic")
-    save_weights(weights_mini, f"{weights_dir}/weights_mini_batch.txt",
-                 "mini-batch")
+    save_weights(
+        weights_mini, f"{weights_dir}/weights_mini_batch.txt", "mini-batch"
+    )
 
     print(f"\n{GREEN}All weights saved in {weights_dir}/:{RESET}")
-    print(f"{GREEN}You can now use --bonus with logreg_predict.py "
-          f"to compare predictions!{RESET}")
+    print(
+        f"{GREEN}You can now use --bonus with logreg_predict.py "
+        f"to compare predictions!{RESET}"
+    )
 
 
 def train_all_bonus(X, Y_dict, iterations, lr):
-    print(f"\nBONUS MODE: Training with multiple optimizers!")
-    print(f"Comparing Batch GD, SGD, and Mini-batch GD\n")
+    print("\nBONUS MODE: Training with multiple optimizers!")
+    print("Comparing Batch GD, SGD, and Mini-batch GD\n")
 
     optimizers = [
         ("Batch GD", train, {}),
         ("SGD", train_sgd, {}),
-        ("Mini-batch", train_mini_batch, {"batch_size": 32})
+        ("Mini-batch", train_mini_batch, {"batch_size": 32}),
     ]
 
     results = train_all_optimizers(X, Y_dict, iterations, lr, optimizers)
@@ -130,5 +144,5 @@ def train_all_bonus(X, Y_dict, iterations, lr):
     save_all_weights_bonus(
         results["Batch GD"]["weights"],
         results["SGD"]["weights"],
-        results["Mini-batch"]["weights"]
+        results["Mini-batch"]["weights"],
     )

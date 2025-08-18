@@ -11,7 +11,7 @@ def save_scaler(scaler, filepath="weights/scaler.pkl"):
     if not os.path.exists(weights_dir):
         os.makedirs(weights_dir)
 
-    with open(filepath, 'wb') as f:
+    with open(filepath, "wb") as f:
         pickle.dump(scaler, f)
     print(f"Scaler saved to {filepath}")
 
@@ -20,7 +20,7 @@ def load_scaler(filepath="weights/scaler.pkl"):
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Scaler file not found: {filepath}")
 
-    with open(filepath, 'rb') as f:
+    with open(filepath, "rb") as f:
         scaler = pickle.load(f)
     print(f"Scaler loaded from {filepath}")
     return scaler

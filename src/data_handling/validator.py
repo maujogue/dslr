@@ -7,13 +7,13 @@ from data_handling.loader import load
 from data_handling.constants import DEFAULT_DATASET
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+logging.basicConfig(level=logging.INFO, format="%(message)s")
 
 
 def parse_arguments(
     description: str,
     default_file: str = DEFAULT_DATASET,
-    additional_args: list[tuple[str, dict[str, Any]]] = None
+    additional_args: list[tuple[str, dict[str, Any]]] = None,
 ) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
@@ -45,8 +45,8 @@ def load_dataset(file_path: str) -> pd.DataFrame:
 
 
 def validate_required_columns(
-        df: pd.DataFrame,
-        required_columns: list[str]) -> pd.DataFrame:
+    df: pd.DataFrame, required_columns: list[str]
+) -> pd.DataFrame:
     missing_columns = [
         col for col in required_columns if col not in df.columns
     ]
